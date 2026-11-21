@@ -4,7 +4,7 @@ from pathlib import Path
 from types import ModuleType
 from typing import Any
 
-from helpers import Loaded, crate, declared, file_id, load, parse
+from helpers import Loaded, absolute, crate, declared, file_id, load, parse
 
 
 def adt(ra: ModuleType, loaded: Loaded, name: str) -> Any:
@@ -537,3 +537,37 @@ def test_a_variant_pattern_gives_the_enum_it_takes_apart(ra: ModuleType, tmp_pat
         )
     # The variants alike, their enums told apart by name and path.
     assert found == [("Bound", "Model", "Model"), ("Bound", "ModelAttrs", "attrs::ModelAttrs")]
+
+
+def test_a_primitive_type_gives_its_name(ra: ModuleType, built_loaded: Loaded) -> None:
+    db = built_loaded.db
+    found = forms(ra, built_loaded)
+    pair = [t.as_builtin().name().as_str() for t in found["pair"].tuple_fields(db)]  # `(u8, i8)`
+    element, _ = found["array"].as_array(db)  # `[u8; 4]`
+    assert (pair, element.as_builtin().name().as_str()) == (["u8", "i8"], "u8")
+    assert (found["result"].as_builtin(), found["pair"].as_builtin()) == (None, None)  # a `Result` and a tuple
+
+
+def test_each_target_says_which_kind_it_is(ra: ModuleType, tmp_path: Path) -> None:
+    roots = {"src/lib.rs": "", "src/main.rs": "fn main() {}\n", "build.rs": "fn main() {}\n",
+             "tests/checks.rs": "#[test]\nfn checks() {}\n", "benches/timing.rs": "fn main() {}\n",
+             "examples/shown.rs": "fn main() {}\n"}  # fmt: skip
+    (tmp_path / "Cargo.toml").write_text(
+        '[package]\nname = "kinds"\nversion = "0.1.0"\nedition = "2021"\n\n[workspace]\n'
+    )
+    for relative, text in roots.items():
+        (tmp_path / relative).parent.mkdir(parents=True, exist_ok=True)
+        (tmp_path / relative).write_text(text)
+    loaded = load(ra, tmp_path)
+    cargo = loaded.workspace.kind.as_Cargo().cargo
+
+    def kind(relative: str) -> tuple[bool, bool, bool, bool]:
+        found = cargo.index_Target(cargo.target_by_root(absolute(ra, loaded.root / relative))).kind
+        return found.as_BuildScript(), found.as_Test(), found.as_Bench(), found.as_Example()
+
+    no = (False, False, False, False)
+    assert {relative: kind(relative) for relative in roots} == {
+        "src/lib.rs": no, "src/main.rs": no, "build.rs": (True, False, False, False),
+        "tests/checks.rs": (False, True, False, False), "benches/timing.rs": (False, False, True, False),
+        "examples/shown.rs": (False, False, False, True),
+    }  # fmt: skip

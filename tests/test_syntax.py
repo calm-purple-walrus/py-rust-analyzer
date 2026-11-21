@@ -94,7 +94,18 @@ def test_an_expression_is_any_expression_kind_or_a_literal(ra: ModuleType, root:
     assert any(accepted)
 
 
-@pytest.mark.parametrize("name", ["AstAttr", "AstExpr", "AstFn", "AstMacroCall", "AstModule"])
+def test_a_type_definition_has_its_name(ra: ModuleType, root: Any) -> None:
+    assert [adt.name().text() for _, adt in casts(ra, root, "AstAdt")] == ["Record", "Pair", "Unit", "Choice"]
+
+
+def test_a_type_definition_is_a_struct_an_enum_or_a_union(ra: ModuleType, root: Any) -> None:
+    nodes = list(root.descendants())
+    accepted = [ra.AstAdt.cast(n) is not None for n in nodes]
+    assert accepted == [repr(n.kind()) in ("STRUCT", "ENUM", "UNION") for n in nodes]
+    assert sum(accepted) == 4  # Record, Pair, Unit, Choice
+
+
+@pytest.mark.parametrize("name", ["AstAdt", "AstAttr", "AstExpr", "AstFn", "AstMacroCall", "AstModule"])
 def test_a_cast_node_gives_back_the_node_it_was_cast_from(ra: ModuleType, root: Any, name: str) -> None:
     pairs = [(n, cast) for n in root.descendants() if (cast := getattr(ra, name).cast(n)) is not None]
     assert pairs

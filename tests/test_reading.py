@@ -114,6 +114,15 @@ def test_the_target_of_a_root_file_names_its_package(ra: ModuleType, loaded: Loa
     assert {relative: package(relative) for relative in ROOTS} == ROOTS
 
 
+def test_only_the_build_script_is_a_build_script_target(ra: ModuleType, loaded: Loaded) -> None:
+    cargo = loaded.workspace.kind.as_Cargo().cargo
+    roots = [relative for relative, package in ROOTS.items() if package is not None]
+    kinds = {
+        r: cargo.index_Target(cargo.target_by_root(absolute(ra, loaded.root / r))).kind.as_BuildScript() for r in roots
+    }
+    assert kinds == {r: r == "crates/adapters/storage/build.rs" for r in roots}
+
+
 def test_a_package_knows_whether_it_is_a_member_and_the_folder_of_its_manifest(loaded: Loaded) -> None:
     cargo = loaded.workspace.kind.as_Cargo().cargo
     found: dict[str, tuple[bool, str]] = {}

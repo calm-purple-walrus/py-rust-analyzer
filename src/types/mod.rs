@@ -772,6 +772,18 @@ pub struct TargetData {
     pub inner: Held<ra_ap_project_model::TargetData>,
 }
 
+/// `hir::BuiltinType`
+#[pyclass(unsendable)]
+pub struct BuiltinType {
+    pub inner: ra_ap_hir::BuiltinType,
+}
+
+/// `project_model::TargetKind`
+#[pyclass(unsendable)]
+pub struct TargetKind {
+    pub inner: ra_ap_project_model::TargetKind,
+}
+
 /// `project_model::ManifestPath`
 #[pyclass(unsendable)]
 pub struct ManifestPath {
@@ -949,6 +961,8 @@ pub fn register(module: &Bound<'_, PyModule>) -> PyResult<()> {
     module.add_class::<Target>()?;
     module.add_class::<TargetData>()?;
     module.add_class::<ManifestPath>()?;
+    module.add_class::<TargetKind>()?;
+    module.add_class::<BuiltinType>()?;
     module.add_class::<PathResolution>()?;
     module.add_class::<crate::iter::Iter>()?;
     Ok(())
