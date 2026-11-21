@@ -40,3 +40,8 @@ uv run pytest tests
 uv run ruff check tests
 uv run pyright
 ```
+
+## License
+
+Licensed under either the MIT license ([LICENSE-MIT](LICENSE-MIT)) or the Apache License 2.0
+([LICENSE-APACHE](LICENSE-APACHE)), at your option.

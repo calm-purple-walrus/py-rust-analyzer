@@ -4,6 +4,8 @@ name = "rust-analyzer"
 version = "0.1.0"
 description = "Python bindings of rust-analyzer's library crates"
 requires-python = ">=3.14"
+license = "MIT OR Apache-2.0"
+license-files = ["LICENSE-MIT", "LICENSE-APACHE"]
 
 [build-system]
 requires = ["maturin>=1.9,<2"]
