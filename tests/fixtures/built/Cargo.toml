@@ -1,0 +1,7 @@
+# A crate whose build script switches on a cfg, for the wrapper's tests of build scripts.
+[package]
+name = "built"
+version = "0.1.0"
+edition = "2021"
+
+[workspace]

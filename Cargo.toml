@@ -1,0 +1,29 @@
+[package]
+name = "rust_analyzer_wrapper"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.100"
+publish = false
+
+# A workspace of its own, so that it is never a member of a workspace it sits in.
+[workspace]
+resolver = "3"
+
+[lib]
+name = "rust_analyzer_wrapper"
+crate-type = ["cdylib"]
+
+# rust-analyzer 0.0.352 is the version that Rust 1.100.0 ships.
+[dependencies]
+pyo3 = { version = "0.30", features = ["extension-module", "multiple-pymethods"] }
+ra_ap_hir = "=0.0.352"
+ra_ap_hir_expand = "=0.0.352"
+ra_ap_hir_ty = "=0.0.352"
+ra_ap_ide_db = "=0.0.352"
+ra_ap_load-cargo = "=0.0.352"
+ra_ap_paths = "=0.0.352"
+ra_ap_proc_macro_api = "=0.0.352"
+ra_ap_project_model = "=0.0.352"
+ra_ap_syntax = "=0.0.352"
+ra_ap_vfs = "=0.0.352"
+smallvec = "1"

@@ -1,0 +1,7 @@
+# A Python extension module takes Python's symbols from the interpreter that loads it, so on macOS
+# the linker must leave them undefined (PyO3's instructions for building with plain cargo).
+[target.aarch64-apple-darwin]
+rustflags = ["-C", "link-arg=-undefined", "-C", "link-arg=dynamic_lookup"]
+
+[target.x86_64-apple-darwin]
+rustflags = ["-C", "link-arg=-undefined", "-C", "link-arg=dynamic_lookup"]
