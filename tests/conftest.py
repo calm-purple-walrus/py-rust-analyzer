@@ -8,6 +8,7 @@ from pathlib import Path
 from types import ModuleType
 
 import pytest
+from helpers import Loaded, load
 
 CRATE = Path(__file__).parent.parent
 HARBOR = CRATE.parent / "tests" / "fixtures" / "harbor"
@@ -33,3 +34,22 @@ def harbor(tmp_path_factory: pytest.TempPathFactory) -> Path:
     copy = tmp_path_factory.mktemp("harbor") / "harbor"
     shutil.copytree(HARBOR, copy, ignore=shutil.ignore_patterns("target"))
     return copy
+
+
+@pytest.fixture(scope="session")
+def built(tmp_path_factory: pytest.TempPathFactory) -> Path:
+    """A crate whose build script switches on the cfg `built`."""
+    copy = tmp_path_factory.mktemp("built") / "built"
+    shutil.copytree(Path(__file__).parent / "fixtures" / "built", copy)
+    return copy
+
+
+@pytest.fixture(scope="session")
+def built_loaded(ra: ModuleType, built: Path) -> Loaded:
+    return load(ra, built)
+
+
+@pytest.fixture(scope="session")
+def built_tested(ra: ModuleType, built: Path) -> Loaded:
+    """The crate loaded as for its tests, so `cfg(test)` is on."""
+    return load(ra, built, with_tests=True)

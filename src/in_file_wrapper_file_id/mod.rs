@@ -1,6 +1,6 @@
 use pyo3::prelude::*;
 
-use crate::types::{HirFileId, InFileAstAdt, InFileFn, InFileSmallVecTextRange, InFileSyntaxNode, InFileTextRange};
+use crate::types::{HirFileId, InFileAstAdt, InFileAstModule, InFileFn, InFileModuleSource, InFileSmallVecTextRange, InFileSyntaxNode, InFileTextRange};
 
 // `pub file_id: FileKind` of `InFileWrapper<FileKind, T>`, for each `T` Python uses.
 
@@ -42,6 +42,24 @@ impl InFileSyntaxNode {
 
 #[pymethods]
 impl InFileSmallVecTextRange {
+    /// `pub file_id: HirFileId`
+    #[getter]
+    fn file_id(&self) -> HirFileId {
+        HirFileId { inner: self.inner.file_id }
+    }
+}
+
+#[pymethods]
+impl InFileAstModule {
+    /// `pub file_id: HirFileId`
+    #[getter]
+    fn file_id(&self) -> HirFileId {
+        HirFileId { inner: self.inner.file_id }
+    }
+}
+
+#[pymethods]
+impl InFileModuleSource {
     /// `pub file_id: HirFileId`
     #[getter]
     fn file_id(&self) -> HirFileId {

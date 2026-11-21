@@ -243,7 +243,7 @@ pub struct SyntaxText {
 /// `rowan::SyntaxToken`
 #[pyclass(unsendable)]
 pub struct SyntaxToken {
-    pub inner: ra_ap_syntax::SyntaxToken,
+    pub inner: Held<ra_ap_syntax::SyntaxToken>,
 }
 
 /// `text_size::TextRange`
@@ -387,6 +387,404 @@ pub struct InFileSmallVecTextRange {
     pub inner: ra_ap_hir::InFile<smallvec::SmallVec<[ra_ap_syntax::TextRange; 1]>>,
 }
 
+/// `syntax::ast::ArgList`
+#[pyclass(unsendable)]
+pub struct AstArgList {
+    pub inner: ra_ap_syntax::ast::ArgList,
+}
+
+/// `syntax::ast::AwaitExpr`
+#[pyclass(unsendable)]
+pub struct AstAwaitExpr {
+    pub inner: Held<ra_ap_syntax::ast::AwaitExpr>,
+}
+
+/// `syntax::ast::BlockExpr`
+#[pyclass(unsendable)]
+pub struct AstBlockExpr {
+    pub inner: Held<ra_ap_syntax::ast::BlockExpr>,
+}
+
+/// `syntax::ast::ExprStmt`
+#[pyclass(unsendable)]
+pub struct AstExprStmt {
+    pub inner: ra_ap_syntax::ast::ExprStmt,
+}
+
+/// `syntax::ast::ExternCrate`
+#[pyclass(unsendable)]
+pub struct AstExternCrate {
+    pub inner: ra_ap_syntax::ast::ExternCrate,
+}
+
+/// `syntax::ast::ItemList`
+#[pyclass(unsendable)]
+pub struct AstItemList {
+    pub inner: ra_ap_syntax::ast::ItemList,
+}
+
+/// `syntax::ast::LetExpr`
+#[pyclass(unsendable)]
+pub struct AstLetExpr {
+    pub inner: ra_ap_syntax::ast::LetExpr,
+}
+
+/// `syntax::ast::MatchArmList`
+#[pyclass(unsendable)]
+pub struct AstMatchArmList {
+    pub inner: ra_ap_syntax::ast::MatchArmList,
+}
+
+/// `syntax::ast::MatchExpr`
+#[pyclass(unsendable)]
+pub struct AstMatchExpr {
+    pub inner: Held<ra_ap_syntax::ast::MatchExpr>,
+}
+
+/// `syntax::ast::MethodCallExpr`
+#[pyclass(unsendable)]
+pub struct AstMethodCallExpr {
+    pub inner: ra_ap_syntax::ast::MethodCallExpr,
+}
+
+/// `syntax::ast::ParenExpr`
+#[pyclass(unsendable)]
+pub struct AstParenExpr {
+    pub inner: Held<ra_ap_syntax::ast::ParenExpr>,
+}
+
+/// `syntax::ast::RefExpr`
+#[pyclass(unsendable)]
+pub struct AstRefExpr {
+    pub inner: ra_ap_syntax::ast::RefExpr,
+}
+
+/// `syntax::ast::ReturnExpr`
+#[pyclass(unsendable)]
+pub struct AstReturnExpr {
+    pub inner: ra_ap_syntax::ast::ReturnExpr,
+}
+
+/// `syntax::ast::TryExpr`
+#[pyclass(unsendable)]
+pub struct AstTryExpr {
+    pub inner: Held<ra_ap_syntax::ast::TryExpr>,
+}
+
+/// `syntax::ast::Use`
+#[pyclass(unsendable)]
+pub struct AstUse {
+    pub inner: ra_ap_syntax::ast::Use,
+}
+
+/// `syntax::ast::AssocItemList`
+#[pyclass(unsendable)]
+pub struct AstAssocItemList {
+    pub inner: ra_ap_syntax::ast::AssocItemList,
+}
+
+/// `syntax::ast::Attr`
+#[pyclass(unsendable)]
+pub struct AstAttr {
+    pub inner: ra_ap_syntax::ast::Attr,
+}
+
+/// `syntax::ast::CallExpr`
+#[pyclass(unsendable)]
+pub struct AstCallExpr {
+    pub inner: ra_ap_syntax::ast::CallExpr,
+}
+
+/// `syntax::ast::Expr`
+#[pyclass(unsendable)]
+pub struct AstExpr {
+    pub inner: ra_ap_syntax::ast::Expr,
+}
+
+/// `syntax::ast::FieldExpr`
+#[pyclass(unsendable)]
+pub struct AstFieldExpr {
+    pub inner: ra_ap_syntax::ast::FieldExpr,
+}
+
+/// `syntax::ast::LetStmt`
+#[pyclass(unsendable)]
+pub struct AstLetStmt {
+    pub inner: ra_ap_syntax::ast::LetStmt,
+}
+
+/// `syntax::ast::Module`
+#[pyclass(unsendable)]
+pub struct AstModule {
+    pub inner: Held<ra_ap_syntax::ast::Module>,
+}
+
+/// `syntax::ast::RecordFieldList`
+#[pyclass(unsendable)]
+pub struct AstRecordFieldList {
+    pub inner: ra_ap_syntax::ast::RecordFieldList,
+}
+
+/// `syntax::ast::RecordPat`
+#[pyclass(unsendable)]
+pub struct AstRecordPat {
+    pub inner: ra_ap_syntax::ast::RecordPat,
+}
+
+/// `syntax::ast::StmtList`
+#[pyclass(unsendable)]
+pub struct AstStmtList {
+    pub inner: ra_ap_syntax::ast::StmtList,
+}
+
+/// `syntax::ast::VariantList`
+#[pyclass(unsendable)]
+pub struct AstVariantList {
+    pub inner: ra_ap_syntax::ast::VariantList,
+}
+
+/// `syntax::ast::ForExpr`
+#[pyclass(unsendable)]
+pub struct AstForExpr {
+    pub inner: Held<ra_ap_syntax::ast::ForExpr>,
+}
+
+/// `syntax::ast::IfExpr`
+#[pyclass(unsendable)]
+pub struct AstIfExpr {
+    pub inner: Held<ra_ap_syntax::ast::IfExpr>,
+}
+
+/// `syntax::ast::LoopExpr`
+#[pyclass(unsendable)]
+pub struct AstLoopExpr {
+    pub inner: Held<ra_ap_syntax::ast::LoopExpr>,
+}
+
+/// `syntax::ast::PathExpr`
+#[pyclass(unsendable)]
+pub struct AstPathExpr {
+    pub inner: Held<ra_ap_syntax::ast::PathExpr>,
+}
+
+/// `syntax::ast::WhileExpr`
+#[pyclass(unsendable)]
+pub struct AstWhileExpr {
+    pub inner: Held<ra_ap_syntax::ast::WhileExpr>,
+}
+
+/// `syntax::ast::IdentPat`
+#[pyclass(unsendable)]
+pub struct AstIdentPat {
+    pub inner: Held<ra_ap_syntax::ast::IdentPat>,
+}
+
+/// `syntax::ast::WildcardPat`
+#[pyclass(unsendable)]
+pub struct AstWildcardPat {
+    pub inner: Held<ra_ap_syntax::ast::WildcardPat>,
+}
+
+/// `syntax::ast::Stmt`
+#[pyclass(unsendable)]
+pub struct AstStmt {
+    pub inner: ra_ap_syntax::ast::Stmt,
+}
+
+/// `syntax::ast::Pat`
+#[pyclass(unsendable)]
+pub struct AstPat {
+    pub inner: ra_ap_syntax::ast::Pat,
+}
+
+/// `syntax::ast::Path`
+#[pyclass(unsendable)]
+pub struct AstPath {
+    pub inner: ra_ap_syntax::ast::Path,
+}
+
+/// `syntax::ast::CfgAttrMeta`
+#[pyclass(unsendable)]
+pub struct AstCfgAttrMeta {
+    pub inner: Held<ra_ap_syntax::ast::CfgAttrMeta>,
+}
+
+/// `syntax::ast::KeyValueMeta`
+#[pyclass(unsendable)]
+pub struct AstKeyValueMeta {
+    pub inner: Held<ra_ap_syntax::ast::KeyValueMeta>,
+}
+
+/// `syntax::ast::PathMeta`
+#[pyclass(unsendable)]
+pub struct AstPathMeta {
+    pub inner: Held<ra_ap_syntax::ast::PathMeta>,
+}
+
+/// `syntax::ast::TokenTreeMeta`
+#[pyclass(unsendable)]
+pub struct AstTokenTreeMeta {
+    pub inner: Held<ra_ap_syntax::ast::TokenTreeMeta>,
+}
+
+/// `syntax::ast::Meta`
+#[pyclass(unsendable)]
+pub struct AstMeta {
+    pub inner: ra_ap_syntax::ast::Meta,
+}
+
+/// `syntax::ast::TokenTree`
+#[pyclass(unsendable)]
+pub struct AstTokenTree {
+    pub inner: ra_ap_syntax::ast::TokenTree,
+}
+
+/// `syntax::ast::CfgPredicate`
+#[pyclass(unsendable)]
+pub struct AstCfgPredicate {
+    pub inner: ra_ap_syntax::ast::CfgPredicate,
+}
+
+/// `syntax::ast::Name`
+#[pyclass(unsendable)]
+pub struct AstName {
+    pub inner: ra_ap_syntax::ast::Name,
+}
+
+/// `syntax::ast::Comment`
+#[pyclass(unsendable)]
+pub struct AstComment {
+    pub inner: ra_ap_syntax::ast::Comment,
+}
+
+/// `syntax::ast::AssocItem`
+#[pyclass(unsendable)]
+pub struct AstAssocItem {
+    pub inner: ra_ap_syntax::ast::AssocItem,
+}
+
+/// `syntax::ast::RecordField`
+#[pyclass(unsendable)]
+pub struct AstRecordField {
+    pub inner: ra_ap_syntax::ast::RecordField,
+}
+
+/// `syntax::ast::Variant`
+#[pyclass(unsendable)]
+pub struct AstVariant {
+    pub inner: ra_ap_syntax::ast::Variant,
+}
+
+/// `syntax::ast::DocComment`
+#[pyclass(unsendable)]
+pub struct AstDocComment {
+    pub inner: ra_ap_syntax::ast::DocComment,
+}
+
+/// `syntax::ast::RecordPatFieldList`
+#[pyclass(unsendable)]
+pub struct AstRecordPatFieldList {
+    pub inner: ra_ap_syntax::ast::RecordPatFieldList,
+}
+
+/// `syntax::ast::RecordPatField`
+#[pyclass(unsendable)]
+pub struct AstRecordPatField {
+    pub inner: ra_ap_syntax::ast::RecordPatField,
+}
+
+/// `syntax::ast::RestPat`
+#[pyclass(unsendable)]
+pub struct AstRestPat {
+    pub inner: ra_ap_syntax::ast::RestPat,
+}
+
+/// `hir::EnumVariant`
+#[pyclass(unsendable)]
+pub struct EnumVariant {
+    pub inner: ra_ap_hir::EnumVariant,
+}
+
+/// `hir::StructKind`
+#[pyclass(unsendable)]
+pub struct StructKind {
+    pub inner: ra_ap_hir::StructKind,
+}
+
+/// `syntax::Edition`
+#[pyclass(unsendable)]
+pub struct Edition {
+    pub inner: ra_ap_syntax::Edition,
+}
+
+/// `base_db::CrateDisplayName`
+#[pyclass(unsendable)]
+pub struct CrateDisplayName {
+    pub inner: ra_ap_ide_db::base_db::CrateDisplayName,
+}
+
+/// `hir::Impl`
+#[pyclass(unsendable)]
+pub struct Impl {
+    pub inner: ra_ap_hir::Impl,
+}
+
+/// `hir::InFile<ast::Module>`
+#[pyclass(unsendable)]
+pub struct InFileAstModule {
+    pub inner: ra_ap_hir::InFile<ra_ap_syntax::ast::Module>,
+}
+
+/// `hir::InFile<ModuleSource>`
+#[pyclass(unsendable)]
+pub struct InFileModuleSource {
+    pub inner: ra_ap_hir::InFile<ra_ap_hir::ModuleSource>,
+}
+
+/// `hir::AssocItem`
+#[pyclass(unsendable)]
+pub struct AssocItem {
+    pub inner: ra_ap_hir::AssocItem,
+}
+
+/// `hir::TraitRef<'db>`. It borrows the database, so it holds the database's Python object.
+#[pyclass(unsendable)]
+pub struct TraitRef {
+    pub inner: ra_ap_hir::TraitRef<'static>,
+    pub db: Py<Database>,
+}
+
+/// `hir::Visibility`
+#[pyclass(unsendable)]
+pub struct Visibility {
+    pub inner: ra_ap_hir::Visibility,
+}
+
+/// `project_model::Target`, which is `Idx<TargetData>`
+#[pyclass(unsendable)]
+pub struct Target {
+    pub inner: ra_ap_project_model::Target,
+}
+
+/// `project_model::TargetData`
+#[pyclass(unsendable)]
+pub struct TargetData {
+    pub inner: Held<ra_ap_project_model::TargetData>,
+}
+
+/// `project_model::ManifestPath`
+#[pyclass(unsendable)]
+pub struct ManifestPath {
+    pub inner: Held<ra_ap_project_model::ManifestPath>,
+}
+
+/// `hir::PathResolution<'db>`. It borrows the database, so it holds the database's Python object.
+#[pyclass(unsendable)]
+pub struct PathResolution {
+    pub inner: ra_ap_hir::PathResolution<'static>,
+    pub _db: Py<Database>,
+}
+
 /// The variant `ProjectWorkspaceKind::Cargo`, lent by the `ProjectWorkspaceKind` that is that variant.
 #[pyclass(unsendable)]
 pub struct ProjectWorkspaceKindCargo {
@@ -486,6 +884,72 @@ pub fn register(module: &Bound<'_, PyModule>) -> PyResult<()> {
     module.add_class::<MacroCallId>()?;
     module.add_class::<InMacroFileSyntaxToken>()?;
     module.add_class::<InFileSmallVecTextRange>()?;
+    module.add_class::<AstArgList>()?;
+    module.add_class::<AstAwaitExpr>()?;
+    module.add_class::<AstBlockExpr>()?;
+    module.add_class::<AstExprStmt>()?;
+    module.add_class::<AstExternCrate>()?;
+    module.add_class::<AstItemList>()?;
+    module.add_class::<AstLetExpr>()?;
+    module.add_class::<AstMatchArmList>()?;
+    module.add_class::<AstMatchExpr>()?;
+    module.add_class::<AstMethodCallExpr>()?;
+    module.add_class::<AstParenExpr>()?;
+    module.add_class::<AstRefExpr>()?;
+    module.add_class::<AstReturnExpr>()?;
+    module.add_class::<AstTryExpr>()?;
+    module.add_class::<AstUse>()?;
+    module.add_class::<AstAssocItemList>()?;
+    module.add_class::<AstAttr>()?;
+    module.add_class::<AstCallExpr>()?;
+    module.add_class::<AstExpr>()?;
+    module.add_class::<AstFieldExpr>()?;
+    module.add_class::<AstLetStmt>()?;
+    module.add_class::<AstModule>()?;
+    module.add_class::<AstRecordFieldList>()?;
+    module.add_class::<AstRecordPat>()?;
+    module.add_class::<AstStmtList>()?;
+    module.add_class::<AstVariantList>()?;
+    module.add_class::<AstForExpr>()?;
+    module.add_class::<AstIfExpr>()?;
+    module.add_class::<AstLoopExpr>()?;
+    module.add_class::<AstPathExpr>()?;
+    module.add_class::<AstWhileExpr>()?;
+    module.add_class::<AstIdentPat>()?;
+    module.add_class::<AstWildcardPat>()?;
+    module.add_class::<AstStmt>()?;
+    module.add_class::<AstPat>()?;
+    module.add_class::<AstPath>()?;
+    module.add_class::<AstCfgAttrMeta>()?;
+    module.add_class::<AstKeyValueMeta>()?;
+    module.add_class::<AstPathMeta>()?;
+    module.add_class::<AstTokenTreeMeta>()?;
+    module.add_class::<AstMeta>()?;
+    module.add_class::<AstTokenTree>()?;
+    module.add_class::<AstCfgPredicate>()?;
+    module.add_class::<AstName>()?;
+    module.add_class::<AstComment>()?;
+    module.add_class::<AstAssocItem>()?;
+    module.add_class::<AstRecordField>()?;
+    module.add_class::<AstVariant>()?;
+    module.add_class::<AstDocComment>()?;
+    module.add_class::<AstRecordPatFieldList>()?;
+    module.add_class::<AstRecordPatField>()?;
+    module.add_class::<AstRestPat>()?;
+    module.add_class::<EnumVariant>()?;
+    module.add_class::<StructKind>()?;
+    module.add_class::<Edition>()?;
+    module.add_class::<CrateDisplayName>()?;
+    module.add_class::<Impl>()?;
+    module.add_class::<InFileAstModule>()?;
+    module.add_class::<InFileModuleSource>()?;
+    module.add_class::<AssocItem>()?;
+    module.add_class::<TraitRef>()?;
+    module.add_class::<Visibility>()?;
+    module.add_class::<Target>()?;
+    module.add_class::<TargetData>()?;
+    module.add_class::<ManifestPath>()?;
+    module.add_class::<PathResolution>()?;
     module.add_class::<crate::iter::Iter>()?;
     Ok(())
 }

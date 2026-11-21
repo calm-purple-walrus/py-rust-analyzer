@@ -1,13 +1,12 @@
 """Reading harbor's code from Python: its workspace, its syntax and its types, with the standard library loaded."""
 
-import shutil
 from collections.abc import Callable, Iterator
-from dataclasses import dataclass
 from pathlib import Path
 from types import ModuleType
 from typing import Any
 
 import pytest
+from helpers import Loaded, absolute, config, crate, declared, file_id, ignore, load, parse
 
 PACKAGES = {
     "harbor-domain", "harbor-ports", "harbor-scratch", "harbor-storage", "harbor-testing", "harbor-wire",
@@ -15,68 +14,9 @@ PACKAGES = {
 }  # fmt: skip
 
 
-@dataclass
-class Loaded:
-    workspace: Any
-    db: Any
-    vfs: Any
-    client: Any
-    semantics: Any
-    root: Path
-
-
-def absolute(ra: ModuleType, path: Path) -> Any:
-    return ra.AbsPathBuf.try_from_str(str(path)).deref()
-
-
-def ignore(_: str) -> None:
-    pass
-
-
-def config(ra: ModuleType) -> Any:
-    cargo = ra.CargoConfig.default()
-    cargo.sysroot = ra.RustLibSource.Discover()
-    return cargo
-
-
-def load(ra: ModuleType, root: Path, *, with_build_scripts: bool = False) -> Loaded:
-    workspace = ra.ProjectWorkspace.load(ra.ProjectManifest.discover_single(absolute(ra, root)), config(ra), ignore)
-    if with_build_scripts:
-        workspace.set_build_scripts(workspace.run_build_scripts(config(ra), ignore))
-    db, vfs, client = ra.load_workspace(
-        workspace, {}, ra.LoadCargoConfig(False, ra.ProcMacroServerChoice.Sysroot(), False, 1, 1)
-    )
-    return Loaded(workspace, db, vfs, client, ra.SemanticsRootDatabase.new(db), root)
-
-
 @pytest.fixture(scope="module")
 def loaded(ra: ModuleType, harbor: Path) -> Loaded:
     return load(ra, harbor)
-
-
-def file_id(loaded: Loaded, relative: str) -> Any:
-    wanted = str(loaded.root / relative)
-    return next(
-        file for file, path in loaded.vfs.iter() if path.as_path() is not None and str(path.as_path()) == wanted
-    )
-
-
-def parse(loaded: Loaded, relative: str) -> Any:
-    return loaded.semantics.deref().parse_guess_edition(file_id(loaded, relative))
-
-
-def crate(ra: ModuleType, loaded: Loaded, root_file: str, sysroot: str | None = None) -> Any:
-    """The crate whose root is that file of the workspace or, if `sysroot` is given, that file of the sysroot."""
-    if sysroot is not None:
-        return next(
-            c
-            for c in ra.Crate.all(loaded.db)
-            if str(loaded.vfs.file_path(c.root_file(loaded.db)).as_path()).endswith(f"/{sysroot}")
-        )
-    wanted = str(loaded.root / root_file)
-    return next(
-        c for c in ra.Crate.all(loaded.db) if str(loaded.vfs.file_path(c.root_file(loaded.db)).as_path()) == wanted
-    )
 
 
 def functions(ra: ModuleType, loaded: Loaded, relative: str) -> Iterator[tuple[Any, Any]]:
@@ -89,19 +29,6 @@ def functions(ra: ModuleType, loaded: Loaded, relative: str) -> Iterator[tuple[A
 
 def function(ra: ModuleType, loaded: Loaded, relative: str, name: str) -> tuple[Any, Any]:
     return next(f for f in functions(ra, loaded, relative) if f[1].name(loaded.db).as_str() == name)
-
-
-def declared(ra: ModuleType, loaded: Loaded, variant: str, name: str, *, of_harbor: bool = True) -> Any:
-    """The type or trait of that name, declared by a crate of harbor or, if not `of_harbor`, by any crate."""
-    for c in ra.Crate.all(loaded.db):
-        if of_harbor and not str(loaded.vfs.file_path(c.root_file(loaded.db)).as_path()).startswith(str(loaded.root)):
-            continue
-        for module in c.modules(loaded.db):
-            for definition in module.declarations(loaded.db):
-                found = getattr(definition, f"as_{variant}")()
-                if found is not None and found.name(loaded.db).as_str() == name:
-                    return found
-    raise LookupError(name)
 
 
 def shown(ra: ModuleType, loaded: Loaded, ty: Any, root_file: str = "crates/domain/src/lib.rs") -> str:
@@ -131,6 +58,16 @@ def test_the_sysroot_setting_reads_back(ra: ModuleType) -> None:
     assert not cargo.sysroot.as_Discover()
 
 
+def test_the_test_settings_read_back(ra: ModuleType) -> None:
+    cargo = ra.CargoConfig.default()
+    assert (cargo.set_test, cargo.all_targets) == (False, False)
+    cargo.set_test = True
+    assert (cargo.set_test, cargo.all_targets) == (True, False)
+    cargo.all_targets = True
+    cargo.set_test = False
+    assert (cargo.set_test, cargo.all_targets) == (False, True)
+
+
 def test_the_proc_macro_server_of_the_sysroot_starts(ra: ModuleType, loaded: Loaded) -> None:
     assert isinstance(loaded.client, ra.ProcMacroClient)
 
@@ -154,6 +91,47 @@ def test_the_cargo_workspace_names_every_package(loaded: Loaded) -> None:
     assert {cargo.index_Package(package).name for package in cargo.packages()} == PACKAGES
 
 
+ROOTS = {
+    "crates/domain/src/lib.rs": "harbor-domain",
+    "crates/application/ports/src/lib.rs": "harbor-ports",
+    "crates/tests/support/src/lib.rs": "harbor-testing",
+    "crates/adapters/storage/src/lib.rs": "harbor-storage",
+    "crates/adapters/storage/build.rs": "harbor-storage",
+    "crates/adapters/wire/src/lib.rs": "harbor-wire",
+    "tools/scratch/src/lib.rs": "harbor-scratch",
+    "vendor/spinloop/src/lib.rs": None,  # the root of a package that is not a member
+    "crates/domain/src/stack.rs": None,  # not the root of a target
+}
+
+
+def test_the_target_of_a_root_file_names_its_package(ra: ModuleType, loaded: Loaded) -> None:
+    cargo = loaded.workspace.kind.as_Cargo().cargo
+
+    def package(relative: str) -> str | None:
+        target = cargo.target_by_root(absolute(ra, loaded.root / relative))
+        return None if target is None else cargo.index_Package(cargo.index_Target(target).package).name
+
+    assert {relative: package(relative) for relative in ROOTS} == ROOTS
+
+
+def test_a_package_knows_whether_it_is_a_member_and_the_folder_of_its_manifest(loaded: Loaded) -> None:
+    cargo = loaded.workspace.kind.as_Cargo().cargo
+    found: dict[str, tuple[bool, str]] = {}
+    for package in cargo.packages():
+        data = cargo.index_Package(package)
+        found[data.name] = (data.is_member, str(data.manifest.parent()))
+    folders = {
+        "harbor-domain": "crates/domain", "harbor-ports": "crates/application/ports",
+        "harbor-scratch": "tools/scratch", "harbor-storage": "crates/adapters/storage",
+        "harbor-testing": "crates/tests/support", "harbor-wire": "crates/adapters/wire",
+        "mutants": "vendor/mutants", "pixelkit": "vendor/pixelkit", "spinloop": "vendor/spinloop",
+    }  # fmt: skip
+    assert found == {
+        name: (not name.startswith(("mutants", "pixelkit", "spinloop")), str(loaded.root / folder))
+        for name, folder in folders.items()
+    }
+
+
 def test_a_crate_knows_its_root_file(ra: ModuleType, loaded: Loaded) -> None:
     roots = {str(loaded.vfs.file_path(c.root_file(loaded.db)).as_path()) for c in ra.Crate.all(loaded.db)}
     assert str(loaded.root / "tools/scratch/src/lib.rs") in roots
@@ -172,14 +150,6 @@ def test_a_raising_build_script_progress_panics(ra: ModuleType, harbor: Path) ->
 
     workspace = ra.ProjectWorkspace.load(ra.ProjectManifest.discover_single(absolute(ra, harbor)), config(ra), ignore)
     panics(lambda: workspace.run_build_scripts(config(ra), fail), "the progress callback raised")
-
-
-@pytest.fixture(scope="module")
-def built(ra: ModuleType, tmp_path_factory: pytest.TempPathFactory) -> Path:
-    """A crate whose build script switches on the cfg `built`."""
-    copy = tmp_path_factory.mktemp("built") / "built"
-    shutil.copytree(Path(__file__).parent / "fixtures" / "built", copy)
-    return copy
 
 
 def test_build_scripts_that_are_set_switch_on_their_cfg(ra: ModuleType, built: Path) -> None:
@@ -308,7 +278,7 @@ def test_only_types_with_an_implementation_implement_a_trait(ra: ModuleType, loa
 def test_a_trait_with_a_parameter_is_implemented_only_for_that_argument(ra: ModuleType, loaded: Loaded) -> None:
     # Types given together must come from the same place, here from walking one type; rust-analyzer panics
     # otherwise ("failed to unify type owners").
-    conversion = declared(ra, loaded, "Trait", "From", of_harbor=False)
+    conversion = declared(ra, loaded, "Trait", "From", in_workspace=False)
     inside: list[Any] = []
     returned(ra, loaded, "new").walk(loaded.db, inside.append)
     named = {t.as_adt().name(loaded.db).as_str(): t for t in inside if t.as_adt() is not None}
@@ -418,11 +388,6 @@ def test_a_copy_equals_its_original(ra: ModuleType, loaded: Loaded) -> None:
     assert shown(ra, loaded, returned(ra, loaded, "new").clone()) == "Result<Cargo, DomainError>"
     cargo = loaded.workspace.kind.as_Cargo().cargo.clone()
     assert {cargo.index_Package(package).name for package in cargo.packages()} == PACKAGES
-
-
-@pytest.fixture(scope="module")
-def built_loaded(ra: ModuleType, built: Path) -> Loaded:
-    return load(ra, built)
 
 
 def test_a_function_pointer_lends_the_types_of_its_parameters(ra: ModuleType, built_loaded: Loaded) -> None:
