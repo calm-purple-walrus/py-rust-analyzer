@@ -1,5 +1,5 @@
 [package]
-name = "rust_analyzer_wrapper"
+name = "py-rust-analyzer"
 version = "0.1.0"
 edition = "2024"
 rust-version = "1.100"
@@ -10,7 +10,7 @@ publish = false
 resolver = "3"
 
 [lib]
-name = "rust_analyzer_wrapper"
+name = "rust_analyzer"
 crate-type = ["cdylib"]
 
 # rust-analyzer 0.0.352 is the version that Rust 1.100.0 ships.

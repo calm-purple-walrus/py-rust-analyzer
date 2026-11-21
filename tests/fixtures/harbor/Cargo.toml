@@ -1,0 +1,27 @@
+[workspace]
+resolver = "3"
+members = [
+    "crates/domain",
+    "crates/application/ports",
+    "crates/adapters/storage",
+    "crates/adapters/wire",
+    "crates/tests/support",
+    "tools/scratch",
+]
+exclude = ["vendor"]
+
+[workspace.package]
+edition = "2024"
+
+[workspace.dependencies]
+harbor-domain = { path = "crates/domain" }
+harbor-ports = { path = "crates/application/ports" }
+harbor-storage = { path = "crates/adapters/storage" }
+harbor-testing = { path = "crates/tests/support" }
+harbor-scratch = { path = "tools/scratch" }
+mutants = { path = "vendor/mutants" }
+pixelkit = { path = "vendor/pixelkit" }
+spinloop = { path = "vendor/spinloop" }
+
+[workspace.lints.clippy]
+needless_return = "allow"

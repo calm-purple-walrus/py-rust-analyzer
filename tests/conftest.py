@@ -1,4 +1,4 @@
-"""Build the wrapper with cargo and import it, so the tests run against the code beside them."""
+"""Build the module with cargo and import it, so the tests run against the code beside them."""
 
 import importlib
 import shutil
@@ -11,7 +11,7 @@ import pytest
 from helpers import Loaded, load
 
 CRATE = Path(__file__).parent.parent
-HARBOR = CRATE.parent / "tests" / "fixtures" / "harbor"
+HARBOR = CRATE / "tests" / "fixtures" / "harbor"
 
 
 @pytest.fixture(scope="session")
@@ -20,12 +20,12 @@ def ra(tmp_path_factory: pytest.TempPathFactory) -> ModuleType:
     built = next(
         p
         for p in (CRATE / "target" / "debug").iterdir()
-        if p.stem == "librust_analyzer_wrapper" and p.suffix in (".dylib", ".so")
+        if p.stem == "librust_analyzer" and p.suffix in (".dylib", ".so")
     )
     folder = tmp_path_factory.mktemp("module")
-    shutil.copy(built, folder / "rust_analyzer_wrapper.so")
+    shutil.copy(built, folder / "rust_analyzer.so")
     sys.path.insert(0, str(folder))
-    return importlib.import_module("rust_analyzer_wrapper")
+    return importlib.import_module("rust_analyzer")
 
 
 @pytest.fixture(scope="session")

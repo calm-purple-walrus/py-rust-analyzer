@@ -1,0 +1,16 @@
+[package]
+name = "harbor-storage"
+version = "0.1.0"
+edition.workspace = true
+build = "build.rs"
+
+[dependencies]
+harbor-domain.workspace = true
+harbor-ports.workspace = true
+spinloop.workspace = true
+
+[dev-dependencies]
+harbor-testing.workspace = true
+
+[build-dependencies]
+harbor-scratch.workspace = true

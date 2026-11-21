@@ -1,7 +1,8 @@
 # rust-analyzer's calls as a Python module, built from the Rust crate beside it.
 [project]
-name = "rust-analyzer-wrapper"
+name = "rust-analyzer"
 version = "0.1.0"
+description = "Python bindings of rust-analyzer's library crates"
 requires-python = ">=3.14"
 
 [build-system]
@@ -9,4 +10,19 @@ requires = ["maturin>=1.9,<2"]
 build-backend = "maturin"
 
 [tool.maturin]
-module-name = "rust_analyzer_wrapper"
+module-name = "rust_analyzer"
+
+[dependency-groups]
+dev = ["pytest>=8", "pyright>=1.1.400", "ruff>=0.12"]
+
+# The tests build the module with cargo themselves; `uv sync` only installs the tools.
+[tool.uv]
+package = false
+
+[tool.pyright]
+include = ["tests"]
+typeCheckingMode = "strict"
+
+[tool.ruff]
+line-length = 120
+extend-exclude = ["tests/fixtures"]

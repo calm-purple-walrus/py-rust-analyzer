@@ -314,7 +314,7 @@ mod visibility_hash;
 mod visibility_public;
 
 #[pymodule]
-fn rust_analyzer_wrapper(module: &Bound<'_, PyModule>) -> PyResult<()> {
+fn rust_analyzer(module: &Bound<'_, PyModule>) -> PyResult<()> {
     module.add_class::<database::Database>()?;
     module.add_function(wrap_pyfunction!(load_workspace::load_workspace, module)?)?;
     types::register(module)
