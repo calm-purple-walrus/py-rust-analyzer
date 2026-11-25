@@ -13,6 +13,7 @@ release of rust-analyzer.
 | py-rust-analyzer | rust-analyzer crates (`ra_ap_*`) | Rust toolchain |
 | ---------------- | -------------------------------- | -------------- |
 | 0.1.0            | 0.0.352                          | 1.100.0        |
+| 0.1.1            | 0.0.352                          | 1.100.0        |
 
 ## Versions
 
@@ -28,6 +29,9 @@ Each version has a git tag (`v0.1.0`). Depend on a tag, not a branch.
 ## Adding a binding
 
 Follow the rules in [AGENTS.md](AGENTS.md).
+
+The types of the module are in the stub `rust_analyzer.pyi`, which is installed with it. Add each new binding to the
+stub; `tests/test_stub.py` fails when the stub and the module differ.
 
 ## Build and test
 

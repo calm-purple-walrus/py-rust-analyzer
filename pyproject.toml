@@ -1,7 +1,7 @@
 # rust-analyzer's calls as a Python module, built from the Rust crate beside it.
 [project]
 name = "rust-analyzer"
-version = "0.1.0"
+version = "0.1.1"
 description = "Python bindings of rust-analyzer's library crates"
 requires-python = ">=3.14"
 license = "MIT OR Apache-2.0"
@@ -18,8 +18,10 @@ module-name = "rust_analyzer"
 dev = ["pytest>=8", "pyright>=1.1.400", "ruff>=0.12"]
 
 # The tests build the module with cargo themselves; `uv sync` only installs the tools.
+# A project that depends on this one by its path builds it again when the bindings change.
 [tool.uv]
 package = false
+cache-keys = [{ file = "pyproject.toml" }, { file = "Cargo.toml" }, { file = "Cargo.lock" }, { file = "src/**/*.rs" }, { file = "rust_analyzer.pyi" }]
 
 [tool.pyright]
 include = ["tests"]

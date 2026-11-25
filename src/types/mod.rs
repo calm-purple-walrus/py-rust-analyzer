@@ -405,6 +405,12 @@ pub struct AstBlockExpr {
     pub inner: Held<ra_ap_syntax::ast::BlockExpr>,
 }
 
+/// `syntax::ast::ClosureExpr`
+#[pyclass(unsendable)]
+pub struct AstClosureExpr {
+    pub inner: Held<ra_ap_syntax::ast::ClosureExpr>,
+}
+
 /// `syntax::ast::ExprStmt`
 #[pyclass(unsendable)]
 pub struct AstExprStmt {
@@ -451,6 +457,12 @@ pub struct AstMethodCallExpr {
 #[pyclass(unsendable)]
 pub struct AstParenExpr {
     pub inner: Held<ra_ap_syntax::ast::ParenExpr>,
+}
+
+/// `syntax::ast::MacroRules`
+#[pyclass(unsendable)]
+pub struct AstMacroRules {
+    pub inner: Held<ra_ap_syntax::ast::MacroRules>,
 }
 
 /// `syntax::ast::RefExpr`
@@ -828,6 +840,466 @@ pub struct HirDisplayWrapper {
     pub _owner: Py<PyAny>,
 }
 
+/// `hir_ty::display::HirDisplayWrapper<'a, 'db, TraitRef<'db>>`. It borrows the trait reference it displays
+/// and the database, so it holds the Python objects of both.
+#[pyclass(unsendable)]
+pub struct HirDisplayWrapperTraitRef {
+    pub inner: ra_ap_hir_ty::display::HirDisplayWrapper<'static, 'static, ra_ap_hir::TraitRef<'static>>,
+    pub db: Py<Database>,
+    pub _owner: Py<PyAny>,
+}
+
+/// `project_model::CargoFeatures`
+#[pyclass(unsendable)]
+pub struct CargoFeatures {
+    pub inner: ra_ap_project_model::CargoFeatures,
+}
+
+/// `project_model::CfgOverrides`
+#[pyclass(unsendable)]
+pub struct CfgOverrides {
+    pub inner: ra_ap_project_model::CfgOverrides,
+}
+
+/// `cfg::CfgDiff`
+#[pyclass(unsendable)]
+pub struct CfgDiff {
+    pub inner: ra_ap_cfg::CfgDiff,
+}
+
+/// `cfg::CfgAtom`
+#[pyclass(unsendable)]
+pub struct CfgAtom {
+    pub inner: ra_ap_hir::CfgAtom,
+}
+
+/// `cfg::CfgExpr`
+#[pyclass(unsendable)]
+pub struct CfgExpr {
+    pub inner: ra_ap_hir::CfgExpr,
+}
+
+/// `cfg::CfgOptions`
+#[pyclass(unsendable)]
+pub struct CfgOptions {
+    pub inner: ra_ap_hir::CfgOptions,
+}
+
+/// `intern::Symbol`
+#[pyclass(unsendable)]
+pub struct Symbol {
+    pub inner: ra_ap_hir::Symbol,
+}
+
+/// `project_model::TargetDirectoryConfig`
+#[pyclass(unsendable)]
+pub struct TargetDirectoryConfig {
+    pub inner: ra_ap_project_model::TargetDirectoryConfig,
+}
+
+/// `project_model::Sysroot`
+#[pyclass(unsendable)]
+pub struct Sysroot {
+    pub inner: ra_ap_project_model::Sysroot,
+}
+
+/// `hir::Union`
+#[pyclass(unsendable)]
+pub struct Union {
+    pub inner: ra_ap_hir::Union,
+}
+
+/// `syntax::ast::Impl`
+#[pyclass(unsendable)]
+pub struct AstImpl {
+    pub inner: Held<ra_ap_syntax::ast::Impl>,
+}
+
+/// `syntax::ast::Trait`
+#[pyclass(unsendable)]
+pub struct AstTrait {
+    pub inner: Held<ra_ap_syntax::ast::Trait>,
+}
+
+/// `syntax::ast::TupleField`
+#[pyclass(unsendable)]
+pub struct AstTupleField {
+    pub inner: ra_ap_syntax::ast::TupleField,
+}
+
+/// `syntax::ast::NameRef`
+#[pyclass(unsendable)]
+pub struct AstNameRef {
+    pub inner: ra_ap_syntax::ast::NameRef,
+}
+
+/// `syntax::ast::CfgMeta`
+#[pyclass(unsendable)]
+pub struct AstCfgMeta {
+    pub inner: Held<ra_ap_syntax::ast::CfgMeta>,
+}
+
+/// `hir::InFile<ast::Impl>`
+#[pyclass(unsendable)]
+pub struct InFileAstImpl {
+    pub inner: ra_ap_hir::InFile<ra_ap_syntax::ast::Impl>,
+}
+
+/// `hir::InFile<ast::Trait>`
+#[pyclass(unsendable)]
+pub struct InFileAstTrait {
+    pub inner: ra_ap_hir::InFile<ra_ap_syntax::ast::Trait>,
+}
+
+/// `hir::InFile<ast::Variant>`
+#[pyclass(unsendable)]
+pub struct InFileAstVariant {
+    pub inner: ra_ap_hir::InFile<ra_ap_syntax::ast::Variant>,
+}
+
+/// `hir::InFile<FieldSource>`
+#[pyclass(unsendable)]
+pub struct InFileFieldSource {
+    pub inner: ra_ap_hir::InFile<ra_ap_hir::FieldSource>,
+}
+
+/// `hir::FieldSource`, lent by the `InFile` that holds it: the type cannot be copied.
+#[pyclass(unsendable)]
+pub struct FieldSource {
+    pub inner: &'static ra_ap_hir::FieldSource,
+    pub _owner: Py<PyAny>,
+}
+
+/// `hir::TypeInfo<'db>`. It borrows the database, so it holds the database's Python object.
+#[pyclass(unsendable)]
+pub struct TypeInfo {
+    pub inner: ra_ap_hir::TypeInfo<'static>,
+    pub db: Py<Database>,
+}
+
+/// `hir::Docs`
+#[pyclass(unsendable)]
+pub struct Docs {
+    pub inner: ra_ap_hir::Docs,
+}
+
+/// `line_index::WideEncoding`
+#[pyclass(unsendable)]
+pub struct WideEncoding {
+    pub inner: ra_ap_ide_db::line_index::WideEncoding,
+}
+
+/// `line_index::WideLineCol`
+#[pyclass(unsendable)]
+pub struct WideLineCol {
+    pub inner: ra_ap_ide_db::line_index::WideLineCol,
+}
+
+/// `hir::GenericParam`
+#[pyclass(unsendable)]
+pub struct GenericParam {
+    pub inner: ra_ap_hir::GenericParam,
+}
+
+/// `syntax::SyntaxError`
+#[pyclass(unsendable)]
+pub struct SyntaxError {
+    pub inner: ra_ap_syntax::SyntaxError,
+}
+
+/// `hir::Variant`
+#[pyclass(unsendable)]
+pub struct Variant {
+    pub inner: ra_ap_hir::Variant,
+}
+
+/// `hir::TypeAlias`
+#[pyclass(unsendable)]
+pub struct TypeAlias {
+    pub inner: ra_ap_hir::TypeAlias,
+}
+
+/// `Either<hir::Field, hir::TupleField<'db>>`. It borrows from the database, so it holds the database's Python
+/// object.
+#[pyclass(unsendable)]
+pub struct EitherFieldTupleField {
+    pub inner: either::Either<ra_ap_hir::Field, ra_ap_hir::TupleField<'static>>,
+    pub _db: Py<Database>,
+}
+
+/// `syntax::ast::ParamList`
+#[pyclass(unsendable)]
+pub struct AstParamList {
+    pub inner: ra_ap_syntax::ast::ParamList,
+}
+
+/// `syntax::ast::Param`
+#[pyclass(unsendable)]
+pub struct AstParam {
+    pub inner: ra_ap_syntax::ast::Param,
+}
+
+/// `syntax::ast::MatchArm`
+#[pyclass(unsendable)]
+pub struct AstMatchArm {
+    pub inner: ra_ap_syntax::ast::MatchArm,
+}
+
+/// `syntax::ast::MatchGuard`
+#[pyclass(unsendable)]
+pub struct AstMatchGuard {
+    pub inner: ra_ap_syntax::ast::MatchGuard,
+}
+
+/// `syntax::ast::LetElse`
+#[pyclass(unsendable)]
+pub struct AstLetElse {
+    pub inner: ra_ap_syntax::ast::LetElse,
+}
+
+/// `syntax::ast::BinExpr`
+#[pyclass(unsendable)]
+pub struct AstBinExpr {
+    pub inner: ra_ap_syntax::ast::BinExpr,
+}
+
+/// `syntax::ast::ArrayExpr`
+#[pyclass(unsendable)]
+pub struct AstArrayExpr {
+    pub inner: ra_ap_syntax::ast::ArrayExpr,
+}
+
+/// `syntax::ast::TupleStructPat`
+#[pyclass(unsendable)]
+pub struct AstTupleStructPat {
+    pub inner: ra_ap_syntax::ast::TupleStructPat,
+}
+
+/// `syntax::ast::TuplePat`
+#[pyclass(unsendable)]
+pub struct AstTuplePat {
+    pub inner: ra_ap_syntax::ast::TuplePat,
+}
+
+/// `syntax::ast::SlicePat`
+#[pyclass(unsendable)]
+pub struct AstSlicePat {
+    pub inner: ra_ap_syntax::ast::SlicePat,
+}
+
+/// `syntax::ast::OrPat`
+#[pyclass(unsendable)]
+pub struct AstOrPat {
+    pub inner: ra_ap_syntax::ast::OrPat,
+}
+
+/// `syntax::ast::RefPat`
+#[pyclass(unsendable)]
+pub struct AstRefPat {
+    pub inner: ra_ap_syntax::ast::RefPat,
+}
+
+/// `syntax::ast::ParenPat`
+#[pyclass(unsendable)]
+pub struct AstParenPat {
+    pub inner: ra_ap_syntax::ast::ParenPat,
+}
+
+/// `syntax::ast::ExternBlock`
+#[pyclass(unsendable)]
+pub struct AstExternBlock {
+    pub inner: ra_ap_syntax::ast::ExternBlock,
+}
+
+/// `syntax::ast::ExternItemList`
+#[pyclass(unsendable)]
+pub struct AstExternItemList {
+    pub inner: ra_ap_syntax::ast::ExternItemList,
+}
+
+/// `syntax::ast::ExternItem`
+#[pyclass(unsendable)]
+pub struct AstExternItem {
+    pub inner: ra_ap_syntax::ast::ExternItem,
+}
+
+/// `syntax::ast::RecordExprField`
+#[pyclass(unsendable)]
+pub struct AstRecordExprField {
+    pub inner: ra_ap_syntax::ast::RecordExprField,
+}
+
+/// `syntax::ast::ElseBranch`
+#[pyclass(unsendable)]
+pub struct AstElseBranch {
+    pub inner: ra_ap_syntax::ast::ElseBranch,
+}
+
+/// `syntax::ast::ArrayExprKind`
+#[pyclass(unsendable)]
+pub struct AstArrayExprKind {
+    pub inner: ra_ap_syntax::ast::ArrayExprKind,
+}
+
+/// `syntax::ast::BlockModifier`
+#[pyclass(unsendable)]
+pub struct AstBlockModifier {
+    pub inner: ra_ap_syntax::ast::BlockModifier,
+}
+
+/// `syntax::ast::BinaryOp`
+#[pyclass(unsendable)]
+pub struct AstBinaryOp {
+    pub inner: ra_ap_syntax::ast::BinaryOp,
+}
+
+/// `syntax::ast::FieldKind`
+#[pyclass(unsendable)]
+pub struct AstFieldKind {
+    pub inner: ra_ap_syntax::ast::FieldKind,
+}
+
+/// `syntax::ast::NameOrNameRef`
+#[pyclass(unsendable)]
+pub struct AstNameOrNameRef {
+    pub inner: ra_ap_syntax::ast::NameOrNameRef,
+}
+
+/// `syntax::ast::Type`
+#[pyclass(unsendable)]
+pub struct AstType {
+    pub inner: ra_ap_syntax::ast::Type,
+}
+
+/// `syntax::ast::Label`
+#[pyclass(unsendable)]
+pub struct AstLabel {
+    pub inner: ra_ap_syntax::ast::Label,
+}
+
+/// `hir::Const`
+#[pyclass(unsendable)]
+pub struct Const {
+    pub inner: ra_ap_hir::Const,
+}
+
+/// `hir::Static`
+#[pyclass(unsendable)]
+pub struct Static {
+    pub inner: ra_ap_hir::Static,
+}
+
+/// `hir::Macro`
+#[pyclass(unsendable)]
+pub struct Macro {
+    pub inner: ra_ap_hir::Macro,
+}
+
+/// `hir::ConstParam`
+#[pyclass(unsendable)]
+pub struct ConstParam {
+    pub inner: ra_ap_hir::ConstParam,
+}
+
+/// `hir::Local<'db>`, retaining the database that owns the local.
+#[pyclass(unsendable)]
+pub struct Local {
+    pub inner: ra_ap_hir::Local<'static>,
+    pub db: Py<Database>,
+}
+
+/// `hir::LocalSource<'db>`, retaining the database that owns the local.
+#[pyclass(unsendable)]
+pub struct LocalSource {
+    pub inner: ra_ap_hir::LocalSource<'static>,
+    pub _db: Py<Database>,
+}
+
+/// `hir::InFile<syntax::ast::Const>`
+#[pyclass(unsendable)]
+pub struct InFileAstConst {
+    pub inner: ra_ap_hir::InFile<ra_ap_syntax::ast::Const>,
+}
+
+/// `hir::InFile<syntax::ast::Static>`
+#[pyclass(unsendable)]
+pub struct InFileAstStatic {
+    pub inner: ra_ap_hir::InFile<ra_ap_syntax::ast::Static>,
+}
+
+/// `hir::InFile<syntax::ast::TypeAlias>`
+#[pyclass(unsendable)]
+pub struct InFileAstTypeAlias {
+    pub inner: ra_ap_hir::InFile<ra_ap_syntax::ast::TypeAlias>,
+}
+
+/// `hir::InFile<either::Either<syntax::ast::Macro, syntax::ast::Fn>>`
+#[pyclass(unsendable)]
+pub struct InFileEitherAstMacroAstFn {
+    pub inner: ra_ap_hir::InFile<either::Either<ra_ap_syntax::ast::Macro, ra_ap_syntax::ast::Fn>>,
+}
+
+/// `hir::InFile<either::Either<syntax::ast::TypeOrConstParam, syntax::ast::Trait>>`
+#[pyclass(unsendable)]
+pub struct InFileEitherAstTypeOrConstParamAstTrait {
+    pub inner: ra_ap_hir::InFile<either::Either<ra_ap_syntax::ast::TypeOrConstParam, ra_ap_syntax::ast::Trait>>,
+}
+
+/// `hir::InFile<syntax::ast::Name>`
+#[pyclass(unsendable)]
+pub struct InFileAstName {
+    pub inner: ra_ap_hir::InFile<ra_ap_syntax::ast::Name>,
+}
+
+/// `hir::InFile<&SyntaxNode>`, retaining the original syntax tree.
+#[pyclass(unsendable)]
+pub struct InFileSyntaxNodeRef {
+    pub inner: ra_ap_hir::InFile<&'static ra_ap_syntax::SyntaxNode>,
+    pub _owner: Py<PyAny>,
+}
+
+/// `syntax::ast::TypeAlias`
+#[pyclass(unsendable)]
+pub struct AstTypeAlias {
+    pub inner: ra_ap_syntax::ast::TypeAlias,
+}
+
+/// `syntax::ast::Const`
+#[pyclass(unsendable)]
+pub struct AstConst {
+    pub inner: ra_ap_syntax::ast::Const,
+}
+
+/// `syntax::ast::Static`
+#[pyclass(unsendable)]
+pub struct AstStatic {
+    pub inner: ra_ap_syntax::ast::Static,
+}
+
+/// `syntax::ast::RangeExpr`
+#[pyclass(unsendable)]
+pub struct AstRangeExpr {
+    pub inner: ra_ap_syntax::ast::RangeExpr,
+}
+
+/// `syntax::ast::RangePat`
+#[pyclass(unsendable)]
+pub struct AstRangePat {
+    pub inner: ra_ap_syntax::ast::RangePat,
+}
+
+/// `hir_expand::InRealFile<SyntaxNode>`
+#[pyclass(unsendable)]
+pub struct InRealFileSyntaxNode {
+    pub inner: ra_ap_hir_expand::InRealFile<ra_ap_syntax::SyntaxNode>,
+}
+
+/// `syntax::ast::String`
+#[pyclass(unsendable)]
+pub struct AstString {
+    pub inner: ra_ap_syntax::ast::String,
+}
+
 pub fn register(module: &Bound<'_, PyModule>) -> PyResult<()> {
     module.add_class::<AbsPath>()?;
     module.add_class::<AbsPathBuf>()?;
@@ -880,6 +1352,7 @@ pub fn register(module: &Bound<'_, PyModule>) -> PyResult<()> {
     module.add_class::<Semantics>()?;
     module.add_class::<SemanticsImpl>()?;
     module.add_class::<HirDisplayWrapper>()?;
+    module.add_class::<HirDisplayWrapperTraitRef>()?;
     module.add_class::<RustLibSource>()?;
     module.add_class::<InFileFn>()?;
     module.add_class::<InFileTextRange>()?;
@@ -899,6 +1372,7 @@ pub fn register(module: &Bound<'_, PyModule>) -> PyResult<()> {
     module.add_class::<AstArgList>()?;
     module.add_class::<AstAwaitExpr>()?;
     module.add_class::<AstBlockExpr>()?;
+    module.add_class::<AstClosureExpr>()?;
     module.add_class::<AstExprStmt>()?;
     module.add_class::<AstExternCrate>()?;
     module.add_class::<AstItemList>()?;
@@ -907,6 +1381,7 @@ pub fn register(module: &Bound<'_, PyModule>) -> PyResult<()> {
     module.add_class::<AstMatchExpr>()?;
     module.add_class::<AstMethodCallExpr>()?;
     module.add_class::<AstParenExpr>()?;
+    module.add_class::<AstMacroRules>()?;
     module.add_class::<AstRefExpr>()?;
     module.add_class::<AstReturnExpr>()?;
     module.add_class::<AstTryExpr>()?;
@@ -956,6 +1431,9 @@ pub fn register(module: &Bound<'_, PyModule>) -> PyResult<()> {
     module.add_class::<InFileAstModule>()?;
     module.add_class::<InFileModuleSource>()?;
     module.add_class::<AssocItem>()?;
+    module.add_class::<Variant>()?;
+    module.add_class::<TypeAlias>()?;
+    module.add_class::<EitherFieldTupleField>()?;
     module.add_class::<TraitRef>()?;
     module.add_class::<Visibility>()?;
     module.add_class::<Target>()?;
@@ -964,6 +1442,77 @@ pub fn register(module: &Bound<'_, PyModule>) -> PyResult<()> {
     module.add_class::<TargetKind>()?;
     module.add_class::<BuiltinType>()?;
     module.add_class::<PathResolution>()?;
+    module.add_class::<CargoFeatures>()?;
+    module.add_class::<CfgOverrides>()?;
+    module.add_class::<CfgDiff>()?;
+    module.add_class::<CfgAtom>()?;
+    module.add_class::<CfgExpr>()?;
+    module.add_class::<CfgOptions>()?;
+    module.add_class::<Symbol>()?;
+    module.add_class::<TargetDirectoryConfig>()?;
+    module.add_class::<Sysroot>()?;
+    module.add_class::<Union>()?;
+    module.add_class::<AstImpl>()?;
+    module.add_class::<AstTrait>()?;
+    module.add_class::<AstTupleField>()?;
+    module.add_class::<AstNameRef>()?;
+    module.add_class::<AstCfgMeta>()?;
+    module.add_class::<InFileAstImpl>()?;
+    module.add_class::<InFileAstTrait>()?;
+    module.add_class::<InFileAstVariant>()?;
+    module.add_class::<InFileFieldSource>()?;
+    module.add_class::<FieldSource>()?;
+    module.add_class::<TypeInfo>()?;
+    module.add_class::<Docs>()?;
+    module.add_class::<WideEncoding>()?;
+    module.add_class::<WideLineCol>()?;
+    module.add_class::<GenericParam>()?;
+    module.add_class::<SyntaxError>()?;
     module.add_class::<crate::iter::Iter>()?;
+    module.add_class::<AstParamList>()?;
+    module.add_class::<AstParam>()?;
+    module.add_class::<AstMatchArm>()?;
+    module.add_class::<AstMatchGuard>()?;
+    module.add_class::<AstLetElse>()?;
+    module.add_class::<AstBinExpr>()?;
+    module.add_class::<AstArrayExpr>()?;
+    module.add_class::<AstTupleStructPat>()?;
+    module.add_class::<AstTuplePat>()?;
+    module.add_class::<AstSlicePat>()?;
+    module.add_class::<AstOrPat>()?;
+    module.add_class::<AstRefPat>()?;
+    module.add_class::<AstParenPat>()?;
+    module.add_class::<AstExternBlock>()?;
+    module.add_class::<AstExternItemList>()?;
+    module.add_class::<AstExternItem>()?;
+    module.add_class::<AstRecordExprField>()?;
+    module.add_class::<AstElseBranch>()?;
+    module.add_class::<AstArrayExprKind>()?;
+    module.add_class::<AstBlockModifier>()?;
+    module.add_class::<AstBinaryOp>()?;
+    module.add_class::<AstFieldKind>()?;
+    module.add_class::<AstNameOrNameRef>()?;
+    module.add_class::<AstType>()?;
+    module.add_class::<AstLabel>()?;
+    module.add_class::<Const>()?;
+    module.add_class::<Static>()?;
+    module.add_class::<Macro>()?;
+    module.add_class::<ConstParam>()?;
+    module.add_class::<Local>()?;
+    module.add_class::<LocalSource>()?;
+    module.add_class::<InFileAstConst>()?;
+    module.add_class::<InFileAstStatic>()?;
+    module.add_class::<InFileAstTypeAlias>()?;
+    module.add_class::<InFileEitherAstMacroAstFn>()?;
+    module.add_class::<InFileEitherAstTypeOrConstParamAstTrait>()?;
+    module.add_class::<InFileAstName>()?;
+    module.add_class::<InFileSyntaxNodeRef>()?;
+    module.add_class::<AstTypeAlias>()?;
+    module.add_class::<AstConst>()?;
+    module.add_class::<AstStatic>()?;
+    module.add_class::<AstRangeExpr>()?;
+    module.add_class::<AstRangePat>()?;
+    module.add_class::<InRealFileSyntaxNode>()?;
+    module.add_class::<AstString>()?;
     Ok(())
 }

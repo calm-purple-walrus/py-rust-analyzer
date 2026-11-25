@@ -53,3 +53,16 @@ def built_loaded(ra: ModuleType, built: Path) -> Loaded:
 def built_tested(ra: ModuleType, built: Path) -> Loaded:
     """The crate loaded as for its tests, so `cfg(test)` is on."""
     return load(ra, built, with_tests=True)
+
+
+@pytest.fixture(scope="session")
+def written(tmp_path_factory: pytest.TempPathFactory) -> Path:
+    """A crate with features and conditions, and with code to read as it is written."""
+    copy = tmp_path_factory.mktemp("written") / "written"
+    shutil.copytree(Path(__file__).parent / "fixtures" / "written", copy)
+    return copy
+
+
+@pytest.fixture(scope="session")
+def written_loaded(ra: ModuleType, written: Path) -> Loaded:
+    return load(ra, written)
