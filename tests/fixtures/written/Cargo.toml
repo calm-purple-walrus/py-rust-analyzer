@@ -1,0 +1,15 @@
+# A crate for the wrapper's tests of how code is written and of the settings a workspace is loaded with.
+[package]
+name = "written"
+version = "0.1.0"
+edition = "2024"
+
+[workspace]
+
+[features]
+default = ["usual"]
+usual = []
+extra = []
+
+[lints.rust]
+unexpected_cfgs = { level = "allow", check-cfg = ["cfg(special)", "cfg(flavor, values(any()))"] }

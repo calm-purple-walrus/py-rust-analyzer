@@ -649,9 +649,11 @@ dependencies = [
 
 [[package]]
 name = "py-rust-analyzer"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
+ "either",
  "pyo3",
+ "ra_ap_cfg",
  "ra_ap_hir",
  "ra_ap_hir_expand",
  "ra_ap_hir_ty",

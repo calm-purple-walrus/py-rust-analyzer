@@ -1,6 +1,6 @@
 [package]
 name = "py-rust-analyzer"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 rust-version = "1.100"
 license = "MIT OR Apache-2.0"
@@ -17,7 +17,9 @@ crate-type = ["cdylib"]
 
 # rust-analyzer 0.0.352 is the version that Rust 1.100.0 ships.
 [dependencies]
+either = "1"
 pyo3 = { version = "0.30", features = ["extension-module", "multiple-pymethods"] }
+ra_ap_cfg = "=0.0.352"
 ra_ap_hir = "=0.0.352"
 ra_ap_hir_expand = "=0.0.352"
 ra_ap_hir_ty = "=0.0.352"
